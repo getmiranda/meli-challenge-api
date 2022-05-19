@@ -18,11 +18,9 @@ func (h *pingHandler) Ping(c *gin.Context) {
 	ctx := c.Request.Context()
 	logger := zerolog.Ctx(ctx)
 
-	logger.Info().Msg("ping")
+	logger.Info().Msg("Pong")
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "pong",
-	})
+	c.String(http.StatusOK, "pong")
 }
 
 func MakePingHandler() PingHandler {
