@@ -32,5 +32,5 @@ jobs:
         with:
           service: meli-challenge-api
           image: gcr.io/dotted-cedar-350702/meli-challenge-api
-          project_id: valoreo-production 
+          project_id: dotted-cedar-350702 
           credentials: ${{ secrets.SERVICE_ACCOUNT_KEYS }}
