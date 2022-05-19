@@ -1,4 +1,7 @@
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - 'main'
 name: Tests
 jobs:
   test:
