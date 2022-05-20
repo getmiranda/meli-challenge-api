@@ -12,6 +12,7 @@ import (
 
 type HumanHandler interface {
 	IsMutant(c *gin.Context)
+	Stats(c *gin.Context)
 }
 
 type humanHandler struct {
@@ -46,6 +47,22 @@ func (h *humanHandler) IsMutant(c *gin.Context) {
 	}
 
 	c.Status(http.StatusOK)
+}
+
+func (h *humanHandler) Stats(c *gin.Context) {
+	ctx := c.Request.Context()
+	log := zerolog.Ctx(ctx)
+
+	log.Info().Msg("Getting stats")
+
+	stats, err := h.humanService.Stats(ctx)
+	if err != nil {
+		log.Error().Err(err).Msg("Error from service")
+		c.JSON(err.Status(), err)
+		return
+	}
+
+	c.JSON(http.StatusOK, stats)
 }
 
 // MakeHumanHandler returns a new HumanHandler.
