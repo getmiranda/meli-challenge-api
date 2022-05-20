@@ -16,9 +16,6 @@ type humanService struct {
 }
 
 func (s *humanService) IsMutant(ctx context.Context, input *humans.HumanRequest) errors_utils.RestErr {
-	if err := input.Validate(); err != nil {
-		return err
-	}
 	return nil
 }
 

@@ -5,10 +5,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetMockedContext(t *testing.T) {
+	gin.SetMode(gin.TestMode)
 	response := httptest.NewRecorder()
 	request := httptest.NewRequest(http.MethodGet, "/path", nil)
 
