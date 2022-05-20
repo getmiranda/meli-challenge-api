@@ -98,7 +98,7 @@ func (s *humanService) Stats(ctx context.Context) (*humans.StatsResponse, errors
 	return &humans.StatsResponse{
 		CountMutantDna: mutantCounter,
 		CountHumanDna:  humanCounter,
-		Ratio:          ratio,
+		Ratio:          float64(int(ratio*100)) / 100,
 	}, nil
 }
 
