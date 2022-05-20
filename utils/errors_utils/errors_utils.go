@@ -15,13 +15,11 @@ var (
 type RestErr interface {
 	Status() int
 	Error() string
-	Causes() []interface{}
 }
 
 type restErr struct {
-	ErrStatus int           `json:"status"`
-	ErrError  string        `json:"error"`
-	ErrCauses []interface{} `json:"-"`
+	ErrStatus int    `json:"status"`
+	ErrError  string `json:"error"`
 }
 
 func (v *restErr) Status() int {
@@ -30,10 +28,6 @@ func (v *restErr) Status() int {
 
 func (v *restErr) Error() string {
 	return v.ErrError
-}
-
-func (e *restErr) Causes() []interface{} {
-	return e.ErrCauses
 }
 
 func getMessageError(v interface{}) string {
@@ -99,17 +93,10 @@ func MakeBadGatewayError(v interface{}) RestErr {
 // MakeInternalServerError returns a new internal server error.
 //
 // type of v is string or error.
-func MakeInternalServerError(v interface{}, err ...error) RestErr {
+func MakeInternalServerError(v interface{}) RestErr {
 	result := &restErr{
 		ErrStatus: http.StatusInternalServerError,
 		ErrError:  getMessageError(v),
-	}
-
-	if len(err) > 0 {
-		result.ErrCauses = make([]interface{}, len(err))
-		for i, e := range err {
-			result.ErrCauses[i] = e
-		}
 	}
 
 	return result
