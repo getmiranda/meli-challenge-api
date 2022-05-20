@@ -68,8 +68,8 @@ func (s *Suite) TestSaveHuman() {
 
 		err := s.repository.SaveHuman(s.ctx, human)
 
-		require.NotNil(s.T(), err)
-		require.EqualValues(s.T(), errors_utils.ErrDatabase.Error(), err.Error())
+		s.NotNil(err)
+		s.EqualValues(errors_utils.ErrDatabase.Error(), err.Error())
 	})
 
 	s.T().Run("NoError", func(t *testing.T) {
@@ -83,6 +83,54 @@ func (s *Suite) TestSaveHuman() {
 
 		err := s.repository.SaveHuman(s.ctx, human)
 
-		require.Nil(s.T(), err)
+		s.Nil(err)
+	})
+}
+
+func (s *Suite) TestGetHumanByDna() {
+	query := `SELECT * FROM "humans" WHERE dna = $1 AND "humans"."deleted_at" IS NULL ORDER BY "humans"."id" LIMIT 1`
+	human := &humans.Human{
+		Dna:      "AAAA-GGGG-CCCC-TTTT",
+		IsMutant: true,
+	}
+
+	s.T().Run("HumanNotFound", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(human.Dna).
+			WillReturnError(gorm.ErrRecordNotFound)
+
+		human, err := s.repository.GetHumanByDna(s.ctx, human.Dna)
+
+		s.Nil(human)
+		s.Nil(err)
+	})
+
+	s.T().Run("UnexpectedError", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(human.Dna).
+			WillReturnError(gorm.ErrInvalidDB)
+
+		_, err := s.repository.GetHumanByDna(s.ctx, human.Dna)
+
+		s.NotNil(err)
+		s.EqualValues(errors_utils.ErrDatabase.Error(), err.Error())
+	})
+
+	s.T().Run("NoError", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(human.Dna).
+			WillReturnRows(sqlmock.NewRows([]string{"id", "created_at", "updated_at", "deleted_at", "dna", "is_mutant"}).
+				AddRow(1, human.CreatedAt, human.UpdatedAt, human.DeletedAt, human.Dna, human.IsMutant))
+
+		h, err := s.repository.GetHumanByDna(s.ctx, human.Dna)
+
+		s.Nil(err)
+		s.NotNil(human)
+		s.EqualValues(human.Dna, h.Dna)
+		s.EqualValues(human.IsMutant, h.IsMutant)
+
 	})
 }
