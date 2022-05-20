@@ -2,7 +2,7 @@ package humans
 
 import (
 	"github.com/getmiranda/meli-challenge-api/utils/errors_utils"
-	"github.com/getmiranda/meli-challenge-api/utils/matrix_utils"
+	"github.com/getmiranda/meli-challenge-api/utils/mutant_utils"
 	"gorm.io/gorm"
 )
 
@@ -26,7 +26,7 @@ func (s *HumanRequest) Validate() errors_utils.RestErr {
 		return errors_utils.MakeBadRequestError("dna is required")
 	}
 
-	if !matrix_utils.IsSquare(s.Dna) {
+	if !mutant_utils.IsSquare(s.Dna) {
 		return errors_utils.MakeBadRequestError("dna must be a square matrix")
 	}
 
