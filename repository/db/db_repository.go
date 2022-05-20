@@ -44,6 +44,7 @@ func (r *dbRepository) SaveHuman(ctx context.Context, human *humans.Human) error
 	return nil
 }
 
+// GetHumanByDna returns a human from the database by dna.
 func (r *dbRepository) GetHumanByDna(ctx context.Context, dna string) (*humans.Human, errors_utils.RestErr) {
 	logger := zerolog.Ctx(ctx)
 	log := logger.With().Str("dna", dna).Logger()

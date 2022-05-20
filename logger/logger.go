@@ -30,6 +30,7 @@ func init() {
 	logger.Info().Msg("Logger initialized")
 }
 
+// GetLogger returns the logger.
 func GetLogger() zerolog.Logger {
 	return logger
 }

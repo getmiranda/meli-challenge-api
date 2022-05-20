@@ -23,6 +23,7 @@ type HumanRequest struct {
 	Dna []string `json:"dna"`
 }
 
+// Validate validates the HumanRequest.
 func (s *HumanRequest) Validate() errors_utils.RestErr {
 	if len(s.Dna) == 0 {
 		return errors_utils.MakeBadRequestError("dna is required")
@@ -36,13 +37,10 @@ func (s *HumanRequest) Validate() errors_utils.RestErr {
 		return errors_utils.MakeBadRequestError("dna must be composed only of 'A', 'T', 'C' and 'G'")
 	}
 
-	for i := 0; i < len(s.Dna); i++ {
-		s.Dna[i] = strings.ToUpper(s.Dna[i])
-	}
-
 	return nil
 }
 
+// GenerateDna generates the dna as a string from the HumanRequest.
 func (s *HumanRequest) GenerateDna() string {
 	return strings.Join(s.Dna, "-")
 }

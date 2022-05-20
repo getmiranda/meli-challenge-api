@@ -23,6 +23,7 @@ func (h *pingHandler) Ping(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 
+// MakePingHandler returns a new PingHandler.
 func MakePingHandler() PingHandler {
 	return &pingHandler{}
 }
