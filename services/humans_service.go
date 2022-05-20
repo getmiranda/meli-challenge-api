@@ -25,7 +25,8 @@ func (s *humanService) IsMutant(ctx context.Context, input *humans.HumanRequest)
 	log.Info().Msg("Checking if human is mutant")
 
 	if err := input.Validate(); err != nil {
-		log.Error().Err(err).Msg("Error validating input")
+		log.Error().Err(err).
+			Interface("dna", input.Dna).Msg("Error validating input")
 		return false, err
 	}
 

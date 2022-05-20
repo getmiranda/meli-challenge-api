@@ -32,6 +32,10 @@ func (s *HumanRequest) Validate() errors_utils.RestErr {
 		return errors_utils.MakeBadRequestError("dna must be a square matrix")
 	}
 
+	for i := 0; i < len(s.Dna); i++ {
+		s.Dna[i] = strings.ToUpper(s.Dna[i])
+	}
+
 	return nil
 }
 
