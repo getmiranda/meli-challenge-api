@@ -14,6 +14,7 @@ import (
 	"github.com/getmiranda/meli-challenge-api/utils/errors_utils"
 	"github.com/getmiranda/meli-challenge-api/utils/test_utils"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func (s *Suite) TestIsMutantErrorBindingJson() {
@@ -97,4 +98,53 @@ func (s *Suite) TestIsMutantNoErrorIsHuman() {
 	log.Println(response)
 
 	s.EqualValues(http.StatusForbidden, c.Writer.Status())
+}
+
+func (s *Suite) TestStatsErrorFromService() {
+	gin.SetMode(gin.TestMode)
+	response := httptest.NewRecorder()
+	request := httptest.NewRequest(http.MethodGet, "/stats/", nil)
+	c := test_utils.GetMockedContext(request, response)
+
+	s.mock.ExpectQuery(
+		regexp.QuoteMeta(`SELECT count(*) FROM "humans" WHERE is_mutant = $1 AND "humans"."deleted_at" IS NULL`)).
+		WillReturnError(gorm.ErrInvalidDB)
+
+	s.humanHandler.Stats(c)
+
+	s.EqualValues(http.StatusInternalServerError, response.Code)
+	apiErr, err := errors_utils.MakeErrorFromBytes(response.Body.Bytes())
+	s.Nil(err)
+	s.NotNil(apiErr)
+	s.EqualValues(http.StatusInternalServerError, apiErr.Status())
+	s.EqualValues("database error", apiErr.Error())
+}
+
+func (s *Suite) TestStatsNoError() {
+	gin.SetMode(gin.TestMode)
+	response := httptest.NewRecorder()
+	request := httptest.NewRequest(http.MethodGet, "/stats/", nil)
+	c := test_utils.GetMockedContext(request, response)
+
+	s.mock.ExpectQuery(
+		regexp.QuoteMeta(`SELECT count(*) FROM "humans" WHERE is_mutant = $1 AND "humans"."deleted_at" IS NULL`)).
+		WithArgs(false).
+		WillReturnRows(sqlmock.NewRows([]string{"count"}).
+			AddRow(100))
+
+	s.mock.ExpectQuery(
+		regexp.QuoteMeta(`SELECT count(*) FROM "humans" WHERE is_mutant = $1 AND "humans"."deleted_at" IS NULL`)).
+		WithArgs(true).
+		WillReturnRows(sqlmock.NewRows([]string{"count"}).
+			AddRow(40))
+
+	s.humanHandler.Stats(c)
+
+	s.EqualValues(http.StatusOK, response.Code)
+	stats := &humans.StatsResponse{}
+	err := json.Unmarshal(response.Body.Bytes(), stats)
+	s.Nil(err)
+	s.EqualValues(100, stats.CountHumanDna)
+	s.EqualValues(40, stats.CountMutantDna)
+	s.EqualValues(0.4, stats.Ratio)
 }

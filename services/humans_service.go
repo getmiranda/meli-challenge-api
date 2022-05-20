@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"sync"
 
 	"github.com/getmiranda/meli-challenge-api/domain/humans"
 	"github.com/getmiranda/meli-challenge-api/repository/db"
@@ -19,10 +20,14 @@ type HumanService interface {
 
 type humanService struct {
 	dbRepo db.DBRepository
+	sync   sync.Mutex
 }
 
 // IsMutant returns true if the human is mutant.
 func (s *humanService) IsMutant(ctx context.Context, input *humans.HumanRequest) (bool, errors_utils.RestErr) {
+	s.sync.Lock()
+	defer s.sync.Unlock()
+
 	log := zerolog.Ctx(ctx)
 
 	log.Info().Msg("Checking if human is mutant")
@@ -101,5 +106,6 @@ func (s *humanService) Stats(ctx context.Context) (*humans.StatsResponse, errors
 func MakeHumansService(db db.DBRepository) HumanService {
 	return &humanService{
 		dbRepo: db,
+		sync:   sync.Mutex{},
 	}
 }
