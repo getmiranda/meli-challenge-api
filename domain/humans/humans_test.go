@@ -39,6 +39,22 @@ func TestValidate(t *testing.T) {
 		assert.EqualValues(t, http.StatusBadRequest, err.Status())
 	})
 
+	t.Run("ErrorDnaIsNotValid", func(t *testing.T) {
+		input := HumanRequest{
+			Dna: []string{
+				"ATGC",
+				"CAGC",
+				"ATTT",
+				"ACGp",
+			},
+		}
+		err := input.Validate()
+
+		assert.NotNil(t, err)
+		assert.EqualValues(t, "dna must be composed only of 'A', 'T', 'C' and 'G'", err.Error())
+		assert.EqualValues(t, http.StatusBadRequest, err.Status())
+	})
+
 	t.Run("Success", func(t *testing.T) {
 		input := HumanRequest{
 			Dna: []string{

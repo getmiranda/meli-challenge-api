@@ -1,9 +1,7 @@
 package mutant_utils
 
-import "fmt"
-
-var (
-	mutantDna = []string{"AAAA", "TTTT", "CCCC", "GGGG"}
+import (
+	"fmt"
 )
 
 type Coordinate struct {
@@ -17,7 +15,11 @@ type Result struct {
 	Coordinates []Coordinate
 }
 
+// IsSquare checks if the dna is a square matrix.
 func IsSquare(m []string) bool {
+	if len(m) == 0 {
+		return false
+	}
 	for i := 0; i < len(m); i++ {
 		if len(m[i]) != len(m) {
 			return false
@@ -26,6 +28,23 @@ func IsSquare(m []string) bool {
 	return true
 }
 
+// IsValidDna checks if the dna is valid.
+func IsValidDna(dna []string) bool {
+	for i := 0; i < len(dna); i++ {
+		for j := 0; j < len(dna[i]); j++ {
+			if !isValidDna(dna[i][j]) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func isValidDna(s byte) bool {
+	return s == 'A' || s == 'T' || s == 'C' || s == 'G'
+}
+
+// IsMutant checks if the dna is a mutant.
 func IsMutant(dna []string) *Result {
 	for i := 0; i < len(dna); i++ {
 		result := isHorizontal(dna, i)
@@ -52,9 +71,6 @@ func isHorizontal(dna []string, i int) *Result {
 			if dna[i][j] == dna[i][j+1] && dna[i][j] == dna[i][j+2] && dna[i][j] == dna[i][j+3] {
 				dnaString := dnaString(dna[i][j], dna[i][j+1], dna[i][j+2], dna[i][j+3])
 				coord := []Coordinate{{i, j}, {i, j + 1}, {i, j + 2}, {i, j + 3}}
-				if !isMutantDna(dnaString) {
-					continue
-				}
 				return &Result{true, dnaString, coord}
 			}
 		}
@@ -68,9 +84,6 @@ func isVertical(dna []string, i int) *Result {
 			if dna[j][i] == dna[j+1][i] && dna[j][i] == dna[j+2][i] && dna[j][i] == dna[j+3][i] {
 				dnaString := dnaString(dna[j][i], dna[j+1][i], dna[j+2][i], dna[j+3][i])
 				coord := []Coordinate{{j, i}, {j + 1, i}, {j + 2, i}, {j + 3, i}}
-				if !isMutantDna(dnaString) {
-					continue
-				}
 				return &Result{true, dnaString, coord}
 			}
 		}
@@ -84,9 +97,6 @@ func isDiagonal(dna []string, i int) *Result {
 			if dna[j][i] == dna[j+1][i+1] && dna[j][i] == dna[j+2][i+2] && dna[j][i] == dna[j+3][i+3] {
 				dnaString := dnaString(dna[j][i], dna[j+1][i+1], dna[j+2][i+2], dna[j+3][i+3])
 				coord := []Coordinate{{j, i}, {j + 1, i + 1}, {j + 2, i + 2}, {j + 3, i + 3}}
-				if !isMutantDna(dnaString) {
-					continue
-				}
 				return &Result{true, dnaString, coord}
 			}
 		}
@@ -96,23 +106,11 @@ func isDiagonal(dna []string, i int) *Result {
 			if dna[j][i] == dna[j+1][i-1] && dna[j][i] == dna[j+2][i-2] && dna[j][i] == dna[j+3][i-3] {
 				dnaString := dnaString(dna[j][i], dna[j+1][i-1], dna[j+2][i-2], dna[j+3][i-3])
 				coord := []Coordinate{{j, i}, {j + 1, i - 1}, {j + 2, i - 2}, {j + 3, i - 3}}
-				if !isMutantDna(dnaString) {
-					continue
-				}
 				return &Result{true, dnaString, coord}
 			}
 		}
 	}
 	return nil
-}
-
-func isMutantDna(dns string) bool {
-	for _, dna := range mutantDna {
-		if dns == dna {
-			return true
-		}
-	}
-	return false
 }
 
 func dnaString(s1, s2, s3, s4 byte) string {
