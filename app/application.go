@@ -1,6 +1,7 @@
 package app
 
 import (
+	mutants_db "github.com/getmiranda/meli-challenge-api/datasources/postgres/mutants"
 	"github.com/getmiranda/meli-challenge-api/logger"
 	"github.com/getmiranda/meli-challenge-api/middleware"
 	"github.com/gin-gonic/gin"
@@ -25,6 +26,10 @@ func StartApplication() {
 			EnabledInZerologContext: true,
 		}),
 	)
+
+	if err := mutants_db.Migrate(); err != nil {
+		log.Fatal().Err(err).Msg("Error migrating database")
+	}
 
 	mapUrls()
 
