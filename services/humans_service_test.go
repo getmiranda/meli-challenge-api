@@ -142,3 +142,83 @@ func (s *Suite) TestIsMutant() {
 		s.EqualValues(true, result)
 	})
 }
+
+func (s *Suite) TestStats() {
+	query := `SELECT count(*) FROM "humans" WHERE is_mutant = $1 AND "humans"."deleted_at" IS NULL`
+	s.T().Run("ErrorFromCountHumans", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WillReturnError(gorm.ErrInvalidDB)
+
+		result, err := s.publicService.Stats(s.ctx)
+
+		s.Nil(result)
+		s.NotNil(err)
+		s.EqualValues(http.StatusInternalServerError, err.Status())
+		s.EqualValues(errors_utils.ErrDatabase.Error(), err.Error())
+
+	})
+
+	s.T().Run("ErrorFromCountMutants", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(false).
+			WillReturnRows(sqlmock.NewRows([]string{"count"}).
+				AddRow(5))
+
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(true).
+			WillReturnError(gorm.ErrInvalidDB)
+
+		result, err := s.publicService.Stats(s.ctx)
+
+		s.Nil(result)
+		s.NotNil(err)
+		s.EqualValues(http.StatusInternalServerError, err.Status())
+		s.EqualValues(errors_utils.ErrDatabase.Error(), err.Error())
+
+	})
+
+	s.T().Run("SuccessHumanCounterIsZero", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(false).
+			WillReturnRows(sqlmock.NewRows([]string{"count"}).
+				AddRow(0))
+
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(true).
+			WillReturnRows(sqlmock.NewRows([]string{"count"}).
+				AddRow(5))
+
+		result, err := s.publicService.Stats(s.ctx)
+
+		s.Nil(err)
+		s.EqualValues(0, result.CountHumanDna)
+		s.EqualValues(5, result.CountMutantDna)
+		s.EqualValues(1.0, result.Ratio)
+	})
+
+	s.T().Run("Success", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(false).
+			WillReturnRows(sqlmock.NewRows([]string{"count"}).
+				AddRow(100))
+
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(true).
+			WillReturnRows(sqlmock.NewRows([]string{"count"}).
+				AddRow(40))
+
+		result, err := s.publicService.Stats(s.ctx)
+
+		s.Nil(err)
+		s.EqualValues(100, result.CountHumanDna)
+		s.EqualValues(40, result.CountMutantDna)
+		s.EqualValues(0.4, result.Ratio)
+	})
+}

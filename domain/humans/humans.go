@@ -44,3 +44,9 @@ func (s *HumanRequest) Validate() errors_utils.RestErr {
 func (s *HumanRequest) GenerateDna() string {
 	return strings.Join(s.Dna, "-")
 }
+
+type StatsResponse struct {
+	CountMutantDna int64   `json:"count_mutant_dna"`
+	CountHumanDna  int64   `json:"count_human_dna"`
+	Ratio          float64 `json:"ratio"`
+}

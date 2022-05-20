@@ -13,6 +13,8 @@ import (
 type HumanService interface {
 	// IsMutant returns true if the human is mutant.
 	IsMutant(ctx context.Context, input *humans.HumanRequest) (bool, errors_utils.RestErr)
+	// Stats returns the number of humans, mutants and ratio of mutants.
+	Stats(ctx context.Context) (*humans.StatsResponse, errors_utils.RestErr)
 }
 
 type humanService struct {
@@ -57,6 +59,42 @@ func (s *humanService) IsMutant(ctx context.Context, input *humans.HumanRequest)
 	log.Info().Bool("is_mutant", human.IsMutant).Msg("Alredy checked")
 
 	return human.IsMutant, nil
+}
+
+// Stats returns the number of humans, mutants and ratio of mutants.
+func (s *humanService) Stats(ctx context.Context) (*humans.StatsResponse, errors_utils.RestErr) {
+	log := zerolog.Ctx(ctx)
+
+	log.Info().Msg("Getting stats")
+
+	humanCounter, err := s.dbRepo.CountHumans(ctx)
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting humans")
+		return nil, err
+	}
+
+	mutantCounter, err := s.dbRepo.CountMutants(ctx)
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting mutants")
+		return nil, err
+	}
+
+	ratio := 1.0
+	if humanCounter != 0 {
+		ratio = float64(mutantCounter) / float64(humanCounter)
+	}
+
+	log.Info().
+		Int64("humans", humanCounter).
+		Int64("mutants", mutantCounter).
+		Float64("ratio", ratio).
+		Msg("Stats")
+
+	return &humans.StatsResponse{
+		CountMutantDna: mutantCounter,
+		CountHumanDna:  humanCounter,
+		Ratio:          ratio,
+	}, nil
 }
 
 // MakeHumansService returns a new instance of the HumanService.
