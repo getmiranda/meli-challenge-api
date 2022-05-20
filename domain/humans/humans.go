@@ -1,6 +1,8 @@
 package humans
 
 import (
+	"strings"
+
 	"github.com/getmiranda/meli-challenge-api/utils/errors_utils"
 	"github.com/getmiranda/meli-challenge-api/utils/mutant_utils"
 	"gorm.io/gorm"
@@ -31,4 +33,8 @@ func (s *HumanRequest) Validate() errors_utils.RestErr {
 	}
 
 	return nil
+}
+
+func (s *HumanRequest) GenerateDna() string {
+	return strings.Join(s.Dna, "-")
 }
