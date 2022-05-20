@@ -7,7 +7,7 @@ on:
   #   #   - main
   #   paths-ignore:
   #     - "**/*.md"
-  
+name: Coverage
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -30,7 +30,7 @@ jobs:
 
     - name: Quality Gate - Test coverage shall be above threshold
       env:
-          TESTCOVERAGE_THRESHOLD: 0
+          TESTCOVERAGE_THRESHOLD: 80
       run: |
             echo "Quality Gate: checking test coverage is above threshold ..."
             echo "Threshold             : $TESTCOVERAGE_THRESHOLD %"
