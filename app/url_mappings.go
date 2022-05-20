@@ -16,4 +16,5 @@ func mapUrls() {
 	hService := services.MakeHumansService(dbRepo)
 	hHandler := http.MakeHumanHandler(hService)
 	router.POST("/mutant/", hHandler.IsMutant)
+	router.GET("/stats/", hHandler.Stats)
 }
