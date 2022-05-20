@@ -15,6 +15,10 @@ type DBRepository interface {
 	SaveHuman(context.Context, *humans.Human) errors_utils.RestErr
 	// GetHumanByDna returns a human from the database.
 	GetHumanByDna(context.Context, string) (*humans.Human, errors_utils.RestErr)
+	// CountMutants returns the number of mutants in the database.
+	CountMutants(context.Context) (int64, errors_utils.RestErr)
+	// CountHumans returns the number of humans in the database.
+	CountHumans(context.Context) (int64, errors_utils.RestErr)
 }
 
 type dbRepository struct {
@@ -64,4 +68,38 @@ func (r *dbRepository) GetHumanByDna(ctx context.Context, dna string) (*humans.H
 	log.Info().Msg("Human found in database")
 
 	return human, nil
+}
+
+// CountMutants returns the number of mutants in the database.
+func (r *dbRepository) CountMutants(ctx context.Context) (int64, errors_utils.RestErr) {
+	log := zerolog.Ctx(ctx)
+
+	log.Info().Msg("Getting mutants count from database")
+
+	var count int64
+	if err := r.DB.Model(&humans.Human{}).Where("is_mutant = ?", true).Count(&count).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting mutants count from database")
+		return 0, errors_utils.MakeInternalServerError(errors_utils.ErrDatabase)
+	}
+
+	log.Info().Int64("mutants_count", count).Msg("Mutants count found in database")
+
+	return count, nil
+}
+
+// CountHumans returns the number of humans in the database.
+func (r *dbRepository) CountHumans(ctx context.Context) (int64, errors_utils.RestErr) {
+	log := zerolog.Ctx(ctx)
+
+	log.Info().Msg("Getting humans count from database")
+
+	var count int64
+	if err := r.DB.Model(&humans.Human{}).Where("is_mutant = ?", false).Count(&count).Error; err != nil {
+		log.Error().Err(err).Msg("Error getting humans count from database")
+		return 0, errors_utils.MakeInternalServerError(errors_utils.ErrDatabase)
+	}
+
+	log.Info().Int64("humans_count", count).Msg("Humans count found in database")
+
+	return count, nil
 }

@@ -11,7 +11,7 @@ import (
 type Human struct {
 	gorm.Model
 	Dna      string `gorm:"column:dna"`
-	IsMutant bool   `gorm:"column:is_mutant"`
+	IsMutant bool   `gorm:"column:is_mutant;index"`
 }
 
 // TableName overrides the table name used by Human to `humans`.
