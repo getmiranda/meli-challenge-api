@@ -1,5 +1,6 @@
 on:
-  branches-ignore:
+  push:
+    branches-ignore:
       - 'main'
   # pull_request:
   #   # branches: 
