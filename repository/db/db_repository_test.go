@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"net/http"
 	"regexp"
 	"testing"
 
@@ -132,5 +133,67 @@ func (s *Suite) TestGetHumanByDna() {
 		s.EqualValues(human.Dna, h.Dna)
 		s.EqualValues(human.IsMutant, h.IsMutant)
 
+	})
+}
+
+func (s *Suite) TestCountMutants() {
+	query := `SELECT count(*) FROM "humans" WHERE is_mutant = $1 AND "humans"."deleted_at" IS NULL`
+
+	s.T().Run("UnexpectedError", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(true).
+			WillReturnError(gorm.ErrInvalidDB)
+
+		count, err := s.repository.CountMutants(s.ctx)
+
+		s.NotNil(err)
+		s.EqualValues(errors_utils.ErrDatabase.Error(), err.Error())
+		s.EqualValues(http.StatusInternalServerError, err.Status())
+		s.EqualValues(0, count)
+	})
+
+	s.T().Run("NoError", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(true).
+			WillReturnRows(sqlmock.NewRows([]string{"count"}).
+				AddRow(5))
+
+		count, err := s.repository.CountMutants(s.ctx)
+
+		s.Nil(err)
+		s.EqualValues(5, count)
+	})
+}
+
+func (s *Suite) TestCountHumans() {
+	query := `SELECT count(*) FROM "humans" WHERE is_mutant = $1 AND "humans"."deleted_at" IS NULL`
+
+	s.T().Run("UnexpectedError", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(false).
+			WillReturnError(gorm.ErrInvalidDB)
+
+		count, err := s.repository.CountHumans(s.ctx)
+
+		s.NotNil(err)
+		s.EqualValues(errors_utils.ErrDatabase.Error(), err.Error())
+		s.EqualValues(http.StatusInternalServerError, err.Status())
+		s.EqualValues(0, count)
+	})
+
+	s.T().Run("NoError", func(t *testing.T) {
+		s.mock.ExpectQuery(
+			regexp.QuoteMeta(query)).
+			WithArgs(false).
+			WillReturnRows(sqlmock.NewRows([]string{"count"}).
+				AddRow(5))
+
+		count, err := s.repository.CountHumans(s.ctx)
+
+		s.Nil(err)
+		s.EqualValues(5, count)
 	})
 }
