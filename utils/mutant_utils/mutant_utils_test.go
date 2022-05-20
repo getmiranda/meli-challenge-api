@@ -7,7 +7,10 @@ import (
 )
 
 func TestIsSquare(t *testing.T) {
-	result := IsSquare([]string{"a"})
+	result := IsSquare([]string{})
+	assert.EqualValues(t, false, result)
+
+	result = IsSquare([]string{"a"})
 	assert.EqualValues(t, true, result)
 
 	result = IsSquare([]string{"a", "b"})
@@ -46,20 +49,20 @@ func TestIsMutant(t *testing.T) {
 	}, result.Coordinates)
 
 	result = IsMutant([]string{
-		"OOOO",
-		"OOOO",
-		"OOOO",
-		"OOOO",
+		"GAGG",
+		"ATOA",
+		"GCGG",
+		"GAGG",
 	})
 	assert.EqualValues(t, false, result.IsMutant)
 
 	result = IsMutant([]string{
-		"OOOOOO",
-		"OOOOOO",
-		"OOOOOA",
-		"OOOOOA",
-		"OOOOOA",
-		"OOOOOA",
+		"TAGTCG",
+		"AGGTGG",
+		"CGTGGA",
+		"GTACGA",
+		"GGCGTA",
+		"GAGCGA",
 	})
 	assert.EqualValues(t, true, result.IsMutant)
 	assert.EqualValues(t, "AAAA", result.Dna)
@@ -71,12 +74,12 @@ func TestIsMutant(t *testing.T) {
 	}, result.Coordinates)
 
 	result = IsMutant([]string{
-		"OOOOOO",
-		"OOAOOO",
-		"OOOAOO",
-		"OOOOAO",
-		"OOOOOA",
-		"OOOOOO",
+		"TCTGCG",
+		"GGAGTT",
+		"AGGAGG",
+		"GCGGAG",
+		"GGGCTA",
+		"TGCGGG",
 	})
 	assert.EqualValues(t, true, result.IsMutant)
 	assert.EqualValues(t, "AAAA", result.Dna)
@@ -88,29 +91,59 @@ func TestIsMutant(t *testing.T) {
 	}, result.Coordinates)
 
 	result = IsMutant([]string{
-		"OOOOOOOOA",
-		"OOOOOOOAO",
-		"OOOOOOAOO",
-		"OOOOOAOOO",
-		"OOOOAOOOO",
-		"OAOAOAAAO",
-		"OOAAAAOOO",
-		"OAOAOOOOO",
-		"OOOOAOAOO",
+		"AGGATGAGA",
+		"GTCGTTGAG",
+		"GCTGCGATG",
+		"TGCTTAGCC",
+		"TGCGACGTG",
+		"CAGAGAAAG",
+		"TGAAAAGGC",
+		"GAGAGGCAG",
+		"GCGGAGAGG",
 	})
 
 	assert.EqualValues(t, true, result.IsMutant)
 	assert.EqualValues(t, "AAAA", result.Dna)
 
 	result = IsMutant([]string{
-		"OOOOOO",
-		"OOOOOO",
-		"OOOOOA",
-		"OOOOAO",
-		"OOOAOO",
-		"OOAOOO",
+		"AGTC",
+		"AGTC",
+		"AGTC",
+		"AGTC",
 	})
 
 	assert.EqualValues(t, true, result.IsMutant)
 	assert.EqualValues(t, "AAAA", result.Dna)
+
+	result = IsMutant([]string{
+		"AGTA",
+		"CGAC",
+		"GATC",
+		"AGTC",
+	})
+
+	assert.EqualValues(t, true, result.IsMutant)
+	assert.EqualValues(t, "AAAA", result.Dna)
+}
+
+func TestIsValidDna(t *testing.T) {
+	result := IsValidDna([]string{
+		"ATGCTA",
+		"CTGTGC",
+		"TTATGT",
+		"AGAAGG",
+		"CCTCTA",
+		"TCACTG",
+	})
+	assert.EqualValues(t, true, result)
+
+	result = IsValidDna([]string{
+		"ATGCTA",
+		"CTGTGC",
+		"TTATGT",
+		"AGAAGG",
+		"CCTCTA",
+		"TCACTQ",
+	})
+	assert.EqualValues(t, false, result)
 }
