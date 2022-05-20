@@ -103,6 +103,7 @@ func MakeInternalServerError(v interface{}) RestErr {
 	return result
 }
 
+// MakeErrorFromBytes returns a new error from bytes.
 func MakeErrorFromBytes(bytes []byte) (RestErr, error) {
 	var apiErr restErr
 	if err := json.Unmarshal(bytes, &apiErr); err != nil {

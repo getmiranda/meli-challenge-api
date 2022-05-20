@@ -16,6 +16,7 @@ type Config struct {
 	EnabledInZerologContext bool
 }
 
+// WithRequestId returns a gin middleware that adds a request id to the request context or request header or response header or zerolog context.
 func WithRequestId(config Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()

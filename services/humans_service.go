@@ -19,6 +19,7 @@ type humanService struct {
 	dbRepo db.DBRepository
 }
 
+// IsMutant returns true if the human is mutant.
 func (s *humanService) IsMutant(ctx context.Context, input *humans.HumanRequest) (bool, errors_utils.RestErr) {
 	log := zerolog.Ctx(ctx)
 
@@ -58,6 +59,7 @@ func (s *humanService) IsMutant(ctx context.Context, input *humans.HumanRequest)
 	return human.IsMutant, nil
 }
 
+// MakeHumansService returns a new instance of the HumanService.
 func MakeHumansService(db db.DBRepository) HumanService {
 	return &humanService{
 		dbRepo: db,

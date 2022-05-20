@@ -48,6 +48,7 @@ func (h *humanHandler) IsMutant(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// MakeHumanHandler returns a new HumanHandler.
 func MakeHumanHandler(service services.HumanService) HumanHandler {
 	return &humanHandler{
 		humanService: service,
