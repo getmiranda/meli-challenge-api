@@ -64,3 +64,15 @@ func TestMakeInternalServerError(t *testing.T) {
 	assert.EqualValues(t, http.StatusInternalServerError, err.Status())
 	assert.EqualValues(t, "error", err.Error())
 }
+
+func TestMakeErrorFromBytes(t *testing.T) {
+	apiErr, err := MakeErrorFromBytes([]byte(`{"status":400,"error":"error"}`))
+	assert.Nil(t, err)
+	assert.EqualValues(t, http.StatusBadRequest, apiErr.Status())
+	assert.EqualValues(t, "error", apiErr.Error())
+
+	apiErr, err = MakeErrorFromBytes([]byte(``))
+	assert.Nil(t, apiErr)
+	assert.NotNil(t, err)
+	assert.EqualValues(t, "invalid json", err.Error())
+}

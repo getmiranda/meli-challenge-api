@@ -1,6 +1,7 @@
 package errors_utils
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -100,4 +101,12 @@ func MakeInternalServerError(v interface{}) RestErr {
 	}
 
 	return result
+}
+
+func MakeErrorFromBytes(bytes []byte) (RestErr, error) {
+	var apiErr restErr
+	if err := json.Unmarshal(bytes, &apiErr); err != nil {
+		return nil, errors.New("invalid json")
+	}
+	return &apiErr, nil
 }
