@@ -6,27 +6,27 @@
 
 Este repositorio contiene el código de la API de Meli Challenge Mutants.
 
-## Referencia de la API {#api}
+## Referencia de la API
 
-### Verifica disponibilidad del servicio {#verifica-disponibilidad-del-servicio}
+### Verifica disponibilidad del servicio
 
 **`GET /ping`**
 
-#### Descripción {#descripcion-get-ping}
+#### Descripción
 
 Verifica si el servicio está disponible.
 
-#### Parámetros {#parametros-get-ping}
+#### Parámetros
 
 No hay parametros.
 
-#### Códigos de estado de respuesta HTTP {#codigos-estado-get-ping}
+#### Códigos de estado de respuesta HTTP
 
 | Codigo | Descripción       |
 | ------ | ----------------- |
 | **200**    | Respuesta exitosa <br> **Headers** <br> `x-request-id` (string): Id unico por petición, sirve para identificar los logs asociados a la petición. |
 
-#### Ejemplo de respuesta {#ejemplo-respuesta-get-ping}
+#### Ejemplo de respuesta
 
 **Headers**:
 
@@ -45,15 +45,15 @@ Content-Length: 15
 pong
 ```
 
-### Verifica si un humano es mutante {#verifica-humano-es-mutante}
+### Verifica si un humano es mutante
 
 **`POST /mutant/`**
 
-#### Descripción {#descripcion-post-mutant}
+#### Descripción
 
 Detecta si un humano es mutante enviando la secuencia de ADN.
 
-#### Parámetros {#parametros-post-mutant}
+#### Parámetros
 
 **Body parameters**:
 
@@ -61,7 +61,7 @@ Detecta si un humano es mutante enviando la secuencia de ADN.
 | :-------: | :-----------:  | :---------- |
 | `dna`     | array (string) | Secuencia de ADN. <br> Solo pueden ser: (A,T,C,G), las cuales representa cada base nitrogenada del ADN. En caso de mandar la misma secuencia de ADN varias veces, se considera como una sola solicitud. |
 
-#### Ejemplo de petición {#ejemplo-peticion-post-mutant}
+#### Ejemplo de petición
 
 **Body**:
 
@@ -78,7 +78,7 @@ Detecta si un humano es mutante enviando la secuencia de ADN.
 }
 ```
 
-#### Códigos de estado de respuesta HTTP {#codigos-estado-post-mutant}
+#### Códigos de estado de respuesta HTTP
 
 | Codigo | Descripción |
 | :----: | :---------- |
@@ -87,7 +87,7 @@ Detecta si un humano es mutante enviando la secuencia de ADN.
 | **403** | El ADN no es mutante. <br> **Headers** <br> `x-request-id` (string): Id unico por petición, sirve para identificar los logs asociados a la petición. <br> **Body** <br> Body vacío |
 | **500** | Error interno del servidor. <br> **Headers** <br> `x-request-id` (string): Id unico por petición, sirve para identificar los logs asociados a la petición. |
 
-#### Ejemplos de respuesta {#ejemplo-respuesta-post-mutant}
+#### Ejemplos de respuesta
 
 **Status Code**: 400
 
