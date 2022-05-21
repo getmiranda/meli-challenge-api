@@ -4,24 +4,26 @@
 
 ## Resumen
 
-Este repositorio contiene el código de la API de Meli Challenge Mutants, instrucciones para ejecutar y una pequeña documentación.
+Este repositorio contiene el código de la API de Meli Challenge Mutants, instrucciones para ejecutar, y una pequeña referencia de la API.
 
 ___
 
 ## Tabla de contenido
 
 1. [Requerimientos](#requerimientos)
-2. [Instalación](#instalación)
+2. [Arquitectura](#arquitectura)
+3. [Instalación](#instalación)
     * [Clona el proyecto](#clona-el-proyecto)
     * [Instala las dependencias](#instala-las-dependencias)
     * [Ejecuta las pruebas](#ejecuta-las-pruebas)
     * [Configura variables de entorno](#configura-variables-de-entorno)
     * [Ejecuta el proyecto](#ejecuta-el-proyecto)
-3. [Endpoints](#endpoints)
-4. [Referencia de la API](#referencia-de-la-api)
+4. [Endpoints](#endpoints)
+5. [Referencia de la API](#referencia-de-la-api)
     * [Verifica disponibilidad del servicio](#verifica-disponibilidad-del-servicio)
     * [Verifica si un humano es mutante](#verifica-si-un-humano-es-mutante)
     * [Genera estadísticas de mutantes y humanos](#genera-estadísticas-de-mutantes-y-humanos)
+6. [Autor](#autor)
 
 ___
 
@@ -35,6 +37,8 @@ ___
 * [PgAdmin](https://www.pgadmin.org/download/) (Opcional)
 
 ___
+
+## Arquitectura
 
 ## Instalación
 
@@ -247,3 +251,7 @@ Content-Length: 40
     "ratio": 0.80
 }
 ```
+
+## Autor
+
+* [Jose Manuel Miranda V.](https://www.linkedin.com/in/getmiranda/) - Desarrollo, testing, documentación y despliegue.
