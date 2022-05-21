@@ -21,6 +21,7 @@ ___
 4. [Referencia de la API](#referencia-de-la-api)
     * [Verifica disponibilidad del servicio](#verifica-disponibilidad-del-servicio)
     * [Verifica si un humano es mutante](#verifica-si-un-humano-es-mutante)
+    * [Genera estadísticas de mutantes y humanos](#genera-estadísticas-de-mutantes-y-humanos)
 
 ___
 
@@ -96,7 +97,7 @@ ___
 
 ### Verifica disponibilidad del servicio
 
-**`GET /ping`**
+#### **`GET /ping`**
 
 #### Descripción
 
@@ -133,19 +134,25 @@ pong
 
 ### Verifica si un humano es mutante
 
-**`POST /mutant/`**
+#### **`POST /mutant/`**
 
 #### Descripción
 
-Detecta si un humano es mutante enviando la secuencia de ADN.
+Detecta si un humano es mutante enviando la secuencia de ADN. El tamaño de la secuencia de ADN debe cumplir con la definición de [*Matriz Cuadrada*](https://es.wikipedia.org/wiki/Matriz_cuadrada). En caso de no cumplir con la definición de Matriz Cuadrada, la API devolverá un código de estado de respuesta HTTP 400.
 
 #### Parámetros
+
+**Headers**:
+
+| Parámetro | Tipo           | Descripción |
+| :-------: | :-----------:  | :---------- |
+| `Content-Type` | `string` | `application/json` |
 
 **Body parameters**:
 
 | Parámetro | Tipo           | Descripción |
 | :-------: | :-----------:  | :---------- |
-| `dna`     | array (string) | Secuencia de ADN. `Required ` <br> Solo pueden ser: (A,T,C,G), las cuales representa cada base nitrogenada del ADN. En caso de mandar la misma secuencia de ADN varias veces, se considera como una sola solicitud. |
+| `dna`     | `array (string)` | Secuencia de ADN. `Required ` <br> Solo pueden ser: (A,T,C,G), las cuales representa cada base nitrogenada del ADN. En caso de mandar la misma secuencia de ADN varias veces, se considera como una sola solicitud. |
 
 #### Ejemplo de petición
 
@@ -173,9 +180,9 @@ Detecta si un humano es mutante enviando la secuencia de ADN.
 | **403** | El ADN no es mutante. <br> **Headers** <br> `x-request-id` (string): Id unico por petición, sirve para identificar los logs asociados a la petición. <br> **Body** <br> Body vacío |
 | **500** | Error interno del servidor. <br> **Headers** <br> `x-request-id` (string): Id unico por petición, sirve para identificar los logs asociados a la petición. |
 
-#### Ejemplos de respuesta
+#### Ejemplo de respuesta
 
-==Status Code==: 400
+*Status Code*: 400
 
 **Headers**:
 
@@ -197,12 +204,33 @@ Content-Length: 40
 }
 ```
 
-**Status Code**: 500
+### Genera estadísticas de mutantes y humanos
+
+#### **`GET /stats/`**  
+
+#### Descripción
+
+Genera estadísticas básicas de numero de mutantes y humanos, y el ratio de mutantes sobre humanos.
+
+#### Parámetros
+
+No hay parámetros.
+
+#### Códigos de estado de respuesta HTTP
+
+| Codigo | Descripción |
+| :----: | :---------- |
+| **200** | Respuesta exitosa <br> **Headers** <br> `x-request-id` (string): Id unico por petición, sirve para identificar los logs asociados a la petición. |
+| **500** | Error interno del servidor. <br> **Headers** <br> `x-request-id` (string): Id unico por petición, sirve para identificar los logs asociados a la petición. |
+
+#### Ejemplo de respuesta
+
+*Status Code*: 200
 
 **Headers**:
 
 ```bash
-HTTP/1.1 500 Internal Server Error
+HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
 X-Request-Id: 5d8f9c8a-f9b7-4c8b-b8f9-f8b8f8b8f8b8
 Date: Fri, 01 Jan 2019 19:00:00 GMT
@@ -214,7 +242,8 @@ Content-Length: 40
 
 ```json
 {
-    "status": 500,
-    "error": "database error"
+    "count_mutant_dna": 12,
+    "count_human_dna": 15,
+    "ratio": 0.80
 }
 ```
