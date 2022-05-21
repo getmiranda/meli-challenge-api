@@ -96,7 +96,7 @@ ___
 
 ### Verifica disponibilidad del servicio
 
-**==GET== `/ping`**
+**`GET /ping`**
 
 #### Descripción
 
@@ -133,7 +133,7 @@ pong
 
 ### Verifica si un humano es mutante
 
-**==POST== `/mutant/`**
+**`POST /mutant/`**
 
 #### Descripción
 
