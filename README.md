@@ -14,6 +14,7 @@ ___
 2. [Arquitectura](#arquitectura)
     * [Cloud](#cloud)
     * [Proyecto](#proyecto)
+    * [Logs](#logs)
 3. [Instalación](#instalación)
     * [Clona el proyecto](#clona-el-proyecto)
     * [Instala las dependencias](#instala-las-dependencias)
@@ -56,6 +57,33 @@ El proyecto utiliza el enfoque de [Domain-Driven Design](https://es.wikipedia.or
 ![Stats](https://user-images.githubusercontent.com/25770844/169662591-1d50a189-0ea1-445d-9273-e581d02cb1a7.png)
 
 ![Mutant](https://user-images.githubusercontent.com/25770844/169662640-519e984f-a5ef-4de0-be2f-059cd211a7b2.png)
+
+### Logs
+
+Para registrar los eventos de la API en cada `request` se utiliza [zerolog](https://github.com/rs/zerolog). Zerolog es un paquete de código abierto que permite escribir logs de forma sencilla en formato JSON. Sin embargo, provee una configuración que permite escribir logs en un formato mas *humano*.
+
+*Ejemplo de logs en formato JSON:*
+
+```json
+{
+  "caller": "/app/services/humans_service.go:38",
+  "msg": "Error validating input",
+  "request_id": "72efb5eb-18f1-4cdd-a08d-59a66b62b5ab", # x-request-id
+  "dna": [
+    "ATGCGA",
+    "CAGTGC",
+    "TTATGT",
+    "AGAAGG",
+    "CCCCTA",
+    "TCACTGq"
+  ],
+  "time": 1653172298, # Unix timestamp
+  "error": "dna must be a square matrix",
+  "level": "error"
+}
+```
+
+*Ejemplo de logs en formato humano:*
 
 ## Instalación
 
