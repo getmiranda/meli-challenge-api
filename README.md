@@ -4,24 +4,28 @@
 
 ## Resumen
 
-Este repositorio contiene el código de la API de Meli Challenge Mutants, instrucciones para ejecutar y una pequeña documentación.
+Este repositorio contiene el código de la API de Meli Challenge Mutants, instrucciones para ejecutar, y una pequeña referencia de la API.
 
 ___
 
 ## Tabla de contenido
 
 1. [Requerimientos](#requerimientos)
-2. [Instalación](#instalación)
+2. [Arquitectura](#arquitectura)
+    * [Cloud](#cloud)
+    * [Proyecto](#proyecto)
+3. [Instalación](#instalación)
     * [Clona el proyecto](#clona-el-proyecto)
     * [Instala las dependencias](#instala-las-dependencias)
     * [Ejecuta las pruebas](#ejecuta-las-pruebas)
     * [Configura variables de entorno](#configura-variables-de-entorno)
     * [Ejecuta el proyecto](#ejecuta-el-proyecto)
-3. [Endpoints](#endpoints)
-4. [Referencia de la API](#referencia-de-la-api)
+4. [Endpoints](#endpoints)
+5. [Referencia de la API](#referencia-de-la-api)
     * [Verifica disponibilidad del servicio](#verifica-disponibilidad-del-servicio)
     * [Verifica si un humano es mutante](#verifica-si-un-humano-es-mutante)
     * [Genera estadísticas de mutantes y humanos](#genera-estadísticas-de-mutantes-y-humanos)
+6. [Autor](#autor)
 
 ___
 
@@ -37,11 +41,21 @@ ___
 ___
 
 ## Arquitectura
-![Mutants drawio (3)](https://user-images.githubusercontent.com/25770844/169662640-519e984f-a5ef-4de0-be2f-059cd211a7b2.png)
 
-![Mutants drawio (2)](https://user-images.githubusercontent.com/25770844/169662591-1d50a189-0ea1-445d-9273-e581d02cb1a7.png)
+### Cloud
 
-![Mutants drawio (4)](https://user-images.githubusercontent.com/25770844/169662642-c3631ef5-8851-40c7-a387-26528ba44fdd.png)
+Meli Challenge Mutants API está desplegada en [Cloud Run](https://cloud.google.com/run/) en Google Cloud Platform. 
+Utiliza Git para versionar el código y Git Actions para automatizar las pruebas y el despliegue.
+
+![Cloud](https://user-images.githubusercontent.com/25770844/169662642-c3631ef5-8851-40c7-a387-26528ba44fdd.png)
+
+### Proyecto
+
+El proyecto utiliza el enfoque de [Domain-Driven Design](https://es.wikipedia.org/wiki/Dise%C3%B1o_guiado_por_el_dominio) y [Arquitectura hexagonal](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)) para la arquitectura de la API.
+
+![Stats](https://user-images.githubusercontent.com/25770844/169662591-1d50a189-0ea1-445d-9273-e581d02cb1a7.png)
+
+![Mutant](https://user-images.githubusercontent.com/25770844/169662640-519e984f-a5ef-4de0-be2f-059cd211a7b2.png)
 
 ## Instalación
 
@@ -254,3 +268,7 @@ Content-Length: 40
     "ratio": 0.80
 }
 ```
+
+## Autor
+
+* [Jose Manuel Miranda V.](https://www.linkedin.com/in/getmiranda/) - Desarrollo, testing, documentación y despliegue.
