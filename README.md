@@ -36,6 +36,13 @@ ___
 
 ___
 
+## Arquitectura
+![Mutants drawio (3)](https://user-images.githubusercontent.com/25770844/169662640-519e984f-a5ef-4de0-be2f-059cd211a7b2.png)
+
+![Mutants drawio (2)](https://user-images.githubusercontent.com/25770844/169662591-1d50a189-0ea1-445d-9273-e581d02cb1a7.png)
+
+![Mutants drawio (4)](https://user-images.githubusercontent.com/25770844/169662642-c3631ef5-8851-40c7-a387-26528ba44fdd.png)
+
 ## Instalación
 
 ### Clona el proyecto
