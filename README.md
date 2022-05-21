@@ -85,6 +85,8 @@ Para registrar los eventos de la API en cada `request` se utiliza [zerolog](http
 
 *Ejemplo de logs en formato humano:*
 
+<img width="921" alt="image" src="https://user-images.githubusercontent.com/25770844/169671986-431a3109-6dcf-422a-8e6e-c64ca65009d9.png">
+
 ## Instalación
 
 ### Clona el proyecto
