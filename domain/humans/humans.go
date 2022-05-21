@@ -5,6 +5,7 @@ import (
 
 	"github.com/getmiranda/meli-challenge-api/utils/errors_utils"
 	"github.com/getmiranda/meli-challenge-api/utils/mutant_utils"
+	"github.com/getmiranda/meli-challenge-api/utils/types"
 	"gorm.io/gorm"
 )
 
@@ -46,7 +47,7 @@ func (s *HumanRequest) GenerateDna() string {
 }
 
 type StatsResponse struct {
-	CountMutantDna int64   `json:"count_mutant_dna"`
-	CountHumanDna  int64   `json:"count_human_dna"`
-	Ratio          float64 `json:"ratio"`
+	CountMutantDna int64       `json:"count_mutant_dna"`
+	CountHumanDna  int64       `json:"count_human_dna"`
+	Ratio          types.Float `json:"ratio"`
 }

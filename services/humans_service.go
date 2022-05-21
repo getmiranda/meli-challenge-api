@@ -8,6 +8,7 @@ import (
 	"github.com/getmiranda/meli-challenge-api/repository/db"
 	"github.com/getmiranda/meli-challenge-api/utils/errors_utils"
 	"github.com/getmiranda/meli-challenge-api/utils/mutant_utils"
+	"github.com/getmiranda/meli-challenge-api/utils/types"
 	"github.com/rs/zerolog"
 )
 
@@ -98,7 +99,7 @@ func (s *humanService) Stats(ctx context.Context) (*humans.StatsResponse, errors
 	return &humans.StatsResponse{
 		CountMutantDna: mutantCounter,
 		CountHumanDna:  humanCounter,
-		Ratio:          float64(int(ratio*100)) / 100,
+		Ratio:          types.Float(ratio),
 	}, nil
 }
 
