@@ -6,16 +6,23 @@
 
 Este repositorio contiene el código de la API de Meli Challenge Mutants, instrucciones para ejecutar y una pequeña documentación.
 
+___
+
 ## Tabla de contenido
 
 1. [Requerimientos](#requerimientos)
-2. [Instalación](#instalacion)
+2. [Instalación](#instalación)
     * [Clona el proyecto](#clona-el-proyecto)
     * [Instala las dependencias](#instala-las-dependencias)
     * [Ejecuta las pruebas](#ejecuta-las-pruebas)
     * [Configura variables de entorno](#configura-variables-de-entorno)
     * [Ejecuta el proyecto](#ejecuta-el-proyecto)
-3. [Referencia de la API](#referencia-de-la-api)
+3. [Endpoints](#endpoints)
+4. [Referencia de la API](#referencia-de-la-api)
+    * [Verifica disponibilidad del servicio](#verifica-disponibilidad-del-servicio)
+    * [Verifica si un humano es mutante](#verifica-si-un-humano-es-mutante)
+
+___
 
 ## Requerimientos
 
@@ -25,6 +32,8 @@ Este repositorio contiene el código de la API de Meli Challenge Mutants, instru
 * [Postman](https://www.postman.com/downloads/) (Para probar la API)
 * [Docker](https://docs.docker.com/get-docker/) (Solo para Cloud Run)
 * [PgAdmin](https://www.pgadmin.org/download/) (Opcional)
+
+___
 
 ## Instalación
 
@@ -71,11 +80,23 @@ go run main.go
 > **Nota**
 > Si no tienes una base de datos en la nube, puedes ejecutar el proyecto en local con la siguiente configuración usando Docker: [PostgreSQL 13 con Docker](https://gist.github.com/getmiranda/57957134f7144429bc195a50c91d003f)
 
+___
+
+## Endpoints
+
+Local
+: `http://localhost:8080`
+
+Producción
+: `https://meli-challenge-api-mjpjf6v63q-uc.a.run.app`
+
+___
+
 ## Referencia de la API
 
 ### Verifica disponibilidad del servicio
 
-**`GET /ping`**
+**==GET== `/ping`**
 
 #### Descripción
 
@@ -112,7 +133,7 @@ pong
 
 ### Verifica si un humano es mutante
 
-**`POST /mutant/`**
+**==POST== `/mutant/`**
 
 #### Descripción
 
@@ -154,7 +175,7 @@ Detecta si un humano es mutante enviando la secuencia de ADN.
 
 #### Ejemplos de respuesta
 
-**Status Code**: 400
+==Status Code==: 400
 
 **Headers**:
 
