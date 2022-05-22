@@ -85,11 +85,13 @@ Para registrar los eventos de la API en cada `request` se utiliza [zerolog](http
 
 *Ejemplo de logs en formato humano:*
 
-<img width="921" alt="image" src="https://user-images.githubusercontent.com/25770844/169671986-431a3109-6dcf-422a-8e6e-c64ca65009d9.png">
+![Logs](https://user-images.githubusercontent.com/25770844/169671986-431a3109-6dcf-422a-8e6e-c64ca65009d9.png)
 
 ## Instalación
 
 ### Clona el proyecto
+
+Dentro de tu workspace, ejecuta el siguiente comando:
 
 ```bash
 git clone https://github.com/getmiranda/meli-challenge-api
@@ -104,8 +106,25 @@ go mod tidy
 
 ### Ejecuta las pruebas
 
+Habitualmente, las pruebas se ejecutan con el comando `go test`.
+
 ```bash
 go test ./... -v -cover
+```
+
+Para ejecutar las pruebas y visualizar el reporte de cobertura de código, se debe ejecutar el siguiente comando:
+
+```bash
+go test ./... -coverprofile coverage.out -covermode count && go tool cover -func coverage.out
+```
+
+Segun la configuración de [Git Actions](https://github.com/getmiranda/meli-challenge-api/blob/main/.github/workflows/coverage.yml), el actual coverage es de **100%**.
+
+```bash
+Quality Gate: checking test coverage is above threshold ...
+Threshold             : 80 %
+Current test coverage : 100.0 %
+OK
 ```
 
 ### Configura variables de entorno
