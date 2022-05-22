@@ -161,6 +161,9 @@ Local
 Producción
 : `https://meli-challenge-api-mjpjf6v63q-uc.a.run.app`
 
+> **Nota**
+> Puedes descargar la colección de postman para probar la API aquí: [Meli Challenge Mutants API.postman_collection.json](https://gist.github.com/getmiranda/c6a84f1eb247ee06afc016d13d88fa05)
+
 ___
 
 ## Referencia de la API
